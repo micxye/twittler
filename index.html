@@ -5,22 +5,38 @@
     <script src="data_generator.js"></script>
   </head>
   <body>
+    <h1>Twittler</h1>
+    <div id="feed"></div>
     <script>
 
       $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+        var $feed = $('#feed');
+        $feed.html('');
 
         var index = streams.home.length - 1;
         while(index >= 0){
           var tweet = streams.home[index];
+          var tweetTime = tweet.created_at
           var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
+          $tweet.text('on ' + tweetTime + ': ' + tweet.message);
+          $tweet.appendTo($feed);
+          var $profile = $('<button type="button"></button>')
+          $profile.text('@' + tweet.user)
+          $profile.prependTo($tweet)
+
           index -= 1;
         }
+        //button that generates new tweets
+
+        //button that filters tweets by user]
+        $('button').on('click', function() {
+          $('div').filter()
+        })
+        //button that unfilters/goes back to feed
 
       });
+
+
 
     </script>
   </body>
