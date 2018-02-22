@@ -5,38 +5,109 @@
     <script src="data_generator.js"></script>
   </head>
   <body>
-    <h1>Twittler</h1>
+    <h1 id='twittler'>TWITTLER</h1>
+    <button id="refresh">Refresh feed</button>
+    <button id="back">Home</button>
+    <h2 id='shawndrost'>shawndrost's timeline</h2>
+    <h2 id='sharksforcheap'>sharksforcheap's timeline</h2>
+    <h2 id='mracus'>mracus's timeline</h2>
+    <h2 id='douglascalhoun'>douglascalhoun's timeline</h2>
     <div id="feed"></div>
+    <div id="profile"></div>
     <script>
 
       $(document).ready(function(){
         var $feed = $('#feed');
         $feed.html('');
+        $('#back').hide()
+        $('#sharksforcheap').hide()
+        $('#mracus').hide()
+        $('#douglascalhoun').hide()
+        $('#shawndrost').hide()
+        //generate between 0 to 2 tweets on each 'refresh'
+        $('#refresh').on('click', function(){
+          var random0thru2 = Math.floor(Math.random() * 3)
+          for (var i = 0; i < random0thru2; i++) {
+            generateRandomTweet();
+            var tweet = streams.home[streams.home.length - 1]
+            var tweetTime = tweet.created_at
+            var $tweet
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var tweetTime = tweet.created_at
-          var $tweet = $('<div></div>');
-          $tweet.text('on ' + tweetTime + ': ' + tweet.message);
-          $tweet.appendTo($feed);
-          var $profile = $('<button type="button"></button>')
-          $profile.text('@' + tweet.user)
-          $profile.prependTo($tweet)
+            var $profile
+            if (tweet.user === 'shawndrost') {
+              $profile = $('<button class="shawndrost"></button>')
+              $tweet = $('<div class="shawndrost"></div>')
+            }
+            if (tweet.user === 'sharksforcheap') {
+              $profile = $('<button class="sharksforcheap"></button>')
+              $tweet = $('<div class="sharksforcheap"></div>')
+            }
+            if (tweet.user === 'mracus') {
+              $profile = $('<button class="mracus"></button>')
+              $tweet = $('<div class="mracus"></div>')
+            }
+            if (tweet.user === 'douglascalhoun') {
+              $profile = $('<button class="douglascalhoun"></button>')
+              $tweet = $('<div class="douglascalhoun"></div>')
+            }
+            $tweet.text('on ' + tweetTime + ': ' + tweet.message);
+            $tweet.prependTo($feed);
+            var profiletext = '@' + tweet.user
+            $profile.text(profiletext)
+            $profile.prependTo($tweet)
+            //buttons that filters tweets by user]
+            $('.shawndrost').on('click', function(){
+              $('.sharksforcheap').hide()
+              $('.mracus').hide()
+              $('.douglascalhoun').hide()
+              $('#refresh').hide()
+              $('#back').show()
+              $('#shawndrost').show()
+            })
+            $('.sharksforcheap').on('click', function(){
+              $('.shawndrost').hide()
+              $('.mracus').hide()
+              $('.douglascalhoun').hide()
+              $('#refresh').hide()
+              $('#back').show()
+              $('#sharksforcheap').show()
+            })
+            $('.mracus').on('click', function(){
+              $('.sharksforcheap').hide()
+              $('.shawndrost').hide()
+              $('.douglascalhoun').hide()
+              $('#refresh').hide()
+              $('#back').show()
+              $('#mracus').show()
+            })
+            $('.douglascalhoun').on('click', function(){
+              $('.sharksforcheap').hide()
+              $('.mracus').hide()
+              $('.shawndrost').hide()
+              $('#refresh').hide()
+              $('#back').show()
+              $('#douglascalhoun').show()
+            })
 
-          index -= 1;
-        }
-        //button that generates new tweets
+          //button that unfilters/goes back to feed
+            $('#back').on('click', function() {
+              $('#back').hide()
+              $('#refresh').show()
+              $('.shawndrost').show()
+              $('.sharksforcheap').show()
+              $('.mracus').show()
+              $('.douglascalhoun').show()
+              $('#shawndrost').hide()
+              $('#sharksforcheap').hide()
+              $('#mracus').hide()
+              $('#douglascalhoun').hide()
+            })
 
-        //button that filters tweets by user]
-        $('button').on('click', function() {
-          $('div').filter()
-        })
-        //button that unfilters/goes back to feed
+          }
+
+        });
 
       });
-
-
 
     </script>
   </body>
